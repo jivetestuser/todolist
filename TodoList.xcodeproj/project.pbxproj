@@ -22,6 +22,8 @@
 		95A52C1A19043F6400F391AD /* TodoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A52C1919043F6400F391AD /* TodoItem.m */; };
 		95A52C23190449B100F391AD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A52C21190449B100F391AD /* RootViewController.m */; };
 		95A52C24190449B100F391AD /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A52C22190449B100F391AD /* RootViewController.xib */; };
+		95B68076190705BE0020F081 /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B68074190705BE0020F081 /* AddTaskViewController.m */; };
+		95B68077190705BE0020F081 /* AddTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95B68075190705BE0020F081 /* AddTaskViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,9 @@
 		95A52C20190449B100F391AD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		95A52C21190449B100F391AD /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		95A52C22190449B100F391AD /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		95B68073190705BE0020F081 /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskViewController.h; sourceTree = "<group>"; };
+		95B68074190705BE0020F081 /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskViewController.m; sourceTree = "<group>"; };
+		95B68075190705BE0020F081 /* AddTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTaskViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +125,9 @@
 				95A52C20190449B100F391AD /* RootViewController.h */,
 				95A52C21190449B100F391AD /* RootViewController.m */,
 				95A52C22190449B100F391AD /* RootViewController.xib */,
+				95B68073190705BE0020F081 /* AddTaskViewController.h */,
+				95B68074190705BE0020F081 /* AddTaskViewController.m */,
+				95B68075190705BE0020F081 /* AddTaskViewController.xib */,
 				95A52C1819043F6400F391AD /* TodoItem.h */,
 				95A52C1919043F6400F391AD /* TodoItem.m */,
 				9560C5B219043C8D000A7D27 /* Images.xcassets */,
@@ -233,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9560C5AB19043C8D000A7D27 /* InfoPlist.strings in Resources */,
+				95B68077190705BE0020F081 /* AddTaskViewController.xib in Resources */,
 				9560C5B319043C8D000A7D27 /* Images.xcassets in Resources */,
 				95A52C24190449B100F391AD /* RootViewController.xib in Resources */,
 			);
@@ -253,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95B68076190705BE0020F081 /* AddTaskViewController.m in Sources */,
 				9560C5B119043C8D000A7D27 /* AppDelegate.m in Sources */,
 				9560C5AD19043C8D000A7D27 /* main.m in Sources */,
 				95A52C23190449B100F391AD /* RootViewController.m in Sources */,

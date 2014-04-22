@@ -8,6 +8,7 @@
 
 #import "RootViewController.h"
 #import "TodoItem.h"
+#import "AddTaskViewController.h"
 
 @interface RootViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) NSMutableArray *dataSourceArray;
@@ -46,7 +47,8 @@
 
 - (void)addNewTask:(id)sender
 {
-    
+    AddTaskViewController *detailViewController = [[AddTaskViewController alloc] initWithNibName:@"AddTaskViewController" bundle:nil];
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark -

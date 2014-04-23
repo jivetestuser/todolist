@@ -11,5 +11,6 @@
 @interface AddTaskViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *txtFldDueDate;
 @property (weak, nonatomic) IBOutlet UITextField *txtFldTask;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 
 @end

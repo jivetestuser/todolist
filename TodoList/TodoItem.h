@@ -10,9 +10,10 @@
 
 @interface TodoItem : NSObject
 @property (nonatomic, copy) NSString *text;
+@property (nonatomic, copy) NSDate *date;
 @property (nonatomic, assign) BOOL completed;
 
-+ (id)toDoItemWithText:(NSString*)text;
-- (id)initWithText:(NSString*)text;
++ (id)toDoItemWithText:(NSString *)text dueDate:(NSDate*)dueDate;
+- (id)initWithText:(NSString*)text dueDate:(NSDate*)dueDate;
 
 @end

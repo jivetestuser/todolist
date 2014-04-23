@@ -10,16 +10,18 @@
 
 @implementation TodoItem
 
-- (id)initWithText:(NSString*)text
+- (id)initWithText:(NSString*)text dueDate:(NSDate*)dueDate
 {
-    if (self = [super init])
+    if (self = [super init]){
         self.text = text;
+        self.date = dueDate;
+    }
     return self;
 }
 
-+ (id)toDoItemWithText:(NSString *)text
++ (id)toDoItemWithText:(NSString *)text dueDate:(NSDate*)dueDate
 {
-    return [[TodoItem alloc] initWithText:text];
+    return [[TodoItem alloc] initWithText:text dueDate:dueDate];
 }
 
 @end

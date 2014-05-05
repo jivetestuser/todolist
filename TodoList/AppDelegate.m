@@ -9,13 +9,17 @@
 #import "AppDelegate.h"
 #import "RootViewController.h"
 
+@interface AppDelegate ()
+@property (strong, nonatomic) RootViewController *rootViewController;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    RootViewController *rootViewController = [[RootViewController alloc]initWithNibName:@"RootViewController" bundle:nil];
-    self.navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+    _rootViewController = [[RootViewController alloc]initWithNibName:@"RootViewController" bundle:nil];
+    self.navigationController = [[UINavigationController alloc]initWithRootViewController:_rootViewController];
     self.window.rootViewController = self.navigationController;
     
     self.window.backgroundColor = [UIColor whiteColor];
@@ -31,8 +35,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [_rootViewController saveData];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

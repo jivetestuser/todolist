@@ -10,4 +10,6 @@
 
 @interface RootViewController : UITableViewController
 
+- (void)saveData;
+
 @end

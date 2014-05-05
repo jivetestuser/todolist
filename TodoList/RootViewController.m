@@ -11,8 +11,10 @@
 #import "AddTaskViewController.h"
 
 @interface RootViewController ()<UITableViewDataSource,UITableViewDelegate>
-@property (nonatomic, strong) NSMutableArray *dataSourceArray;
+@property (nonatomic, strong) NSMutableDictionary *dataSource;
+
 - (void)prepareDataSource;
+
 @end
 
 @implementation RootViewController
@@ -48,50 +50,91 @@
 - (void)addNewTask:(id)sender
 {
     AddTaskViewController *detailViewController = [[AddTaskViewController alloc] initWithNibName:@"AddTaskViewController" bundle:nil];
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    [self presentViewController:detailViewController animated:YES completion:nil];
 }
 
 #pragma mark -
 #pragma mark - Populate data source
 
 - (void)prepareDataSource
+{    
+    NSArray *objectsArray = @[@[@"Feed the dog", @"Buy milk", @"Pack bags for WWDC"],
+                              @[@"Rule the web" , @"Buy a new iPhone"],
+                              @[@"Do your laundry" , @"Write a new tutorial"],
+                              @[@"Master Objective-C" , @"Drink less beer", @"Drink more water"],
+                              @[@"Learn to draw" , @"Get a hair cut"]];
+    NSArray *keysArray = @[[self generateRandomDate],
+                           [self generateRandomDate],
+                           [self generateRandomDate],
+                           [self generateRandomDate],
+                           [self generateRandomDate]];
+    _dataSource = [NSMutableDictionary dictionaryWithObjects:objectsArray forKeys:keysArray];
+}
+
+//- (void)sortDataSource
+//{
+//    
+//    NSArray *keys = [_dataSource allKeys];
+//    NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(compare:)];
+//    NSMutableDictionary *sortedDictionary = [[NSMutableDictionary alloc] init];
+//    for (NSDate * key in sortedKeys)
+//    {
+//        [sortedDictionary setObject:[_dataSource objectForKey:key] forKey:key];
+//        //sortedDictionary = (NSMutableDictionary*) @{[_dataSource objectForKey:key]: key};
+//    }
+//    NSLog(@"%@",sortedDictionary);
+//    
+//    /*
+//    NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
+//    [_dataSourceArray sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+//    _headerArray = [[NSMutableArray alloc]initWithCapacity:0];
+//    
+//    for (TodoItem *item in _dataSourceArray){
+//        NSString *dateString = [self convertDateToString:item.date];
+//        if (![_headerArray isEqual:dateString]){
+//            [_headerArray addObject:dateString];
+//        }
+//    }*/
+//}
+
+- (NSArray*)getObjectAtIndex:(NSInteger)index
 {
-    _dataSourceArray = [[NSMutableArray alloc] init];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Feed the dog"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Buy milk"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Pack bags for WWDC"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Rule the web"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Buy a new iPhone"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Do your laundry"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Write a new tutorial"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Master Objective-C"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Drink less beer"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Learn to draw"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Take the car to the garage"]];
-    [_dataSourceArray addObject:[TodoItem toDoItemWithText:@"Learn to juggle"]];
+    NSArray *keys = [_dataSource allKeys];
+    id aKey = [keys objectAtIndex:index];
+    return [_dataSource objectForKey:aKey];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [[_dataSource allKeys] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_dataSourceArray count];
+    return [[self getObjectAtIndex:section] count];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+    [headerView setBackgroundColor:[UIColor lightGrayColor]];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 3, tableView.bounds.size.width - 10, 18)];
+    label.text = [self convertDateToString:[[_dataSource allKeys] objectAtIndex:section]];;
+    label.textColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.75];
+    label.backgroundColor = [UIColor clearColor];
+    [headerView addSubview:label];
+    return headerView;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *myIdentifier = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:myIdentifier forIndexPath:indexPath];
     
-    TodoItem *item = [_dataSourceArray objectAtIndex:indexPath.row];
-    
-    cell.textLabel.text = item.text;
+    cell.textLabel.text =  [[self getObjectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.showsReorderControl = YES;
 
@@ -108,17 +151,28 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [_dataSourceArray removeObjectAtIndex:indexPath.row];
+        NSMutableArray *array = [[self getObjectAtIndex:indexPath.section] mutableCopy];
+        [array removeObjectAtIndex:indexPath.row];
+        [_dataSource setObject:(NSArray*)array forKey:[[_dataSource allKeys]objectAtIndex:indexPath.section]];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    
+    NSMutableArray *fromArray = [[self getObjectAtIndex:fromIndexPath.section] mutableCopy];
+    NSMutableArray *toArray = [[self getObjectAtIndex:toIndexPath.section] mutableCopy];
+    if (fromIndexPath.section != toIndexPath.section) {
+        [toArray insertObject:[fromArray objectAtIndex:fromIndexPath.row] atIndex:toIndexPath.row];
+        [fromArray removeObject:[fromArray objectAtIndex:fromIndexPath.row]];
+        
+        [_dataSource setObject:(NSArray*)fromArray forKey:[[_dataSource allKeys]objectAtIndex:fromIndexPath.section]];
+        [_dataSource setObject:(NSArray*)toArray forKey:[[_dataSource allKeys]objectAtIndex:toIndexPath.section]];
+    }
+    else{
+        [fromArray exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+        [_dataSource setObject:(NSArray*)fromArray forKey:[[_dataSource allKeys]objectAtIndex:fromIndexPath.section]];
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -126,21 +180,44 @@
     return YES;
 }
 
-/*
-#pragma mark - Table view delegate
+#pragma mark - Random date
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSDate *)generateRandomDate
 {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
+    int r1 = arc4random_uniform(60) + 1;
+    int r2 = arc4random_uniform(23);
+    int r3 = arc4random_uniform(59);
     
-    // Pass the selected object to the new view controller.
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian =
+    [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    NSDateComponents *offsetComponents = [NSDateComponents new];
+    [offsetComponents setDay:(r1*-1)];
+    [offsetComponents setHour:r2];
+    [offsetComponents setMinute:r3];
+    
+    NSDate *rndDate1 = [gregorian dateByAddingComponents:offsetComponents
+                                                  toDate:today options:0];
+    
+    return rndDate1;
 }
-*/
+
+- (NSString*)convertDateToString:(NSDate*)date
+{
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"MM/dd/YYYY"];
+    
+    return [df stringFromDate:date];
+}
+
+#pragma mark -
+#pragma mark - Save Data
+
+- (void)saveData
+{
+    
+}
+
 
 @end
